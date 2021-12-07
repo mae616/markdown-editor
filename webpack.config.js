@@ -1,6 +1,7 @@
 const path = require('path')
 
 module.exports = {
+    mode: 'development',
     entry: './src/index.tsx',
     module: {
         rules: [
@@ -17,10 +18,9 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index.js',
-        publicPath: 'dist/'
+        publicPath: '/dist/'
     },
     devServer: {
-        static: './',
         hot: true,
         open: true
     }
