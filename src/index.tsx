@@ -1,5 +1,10 @@
 import { render } from 'react-dom';
+import styled from 'styled-components';
 
-const Main = (<h1>Markdown Editor + Dev se</h1>);
+const Header = styled.h1`
+    color: red;
+`;
+
+const Main = (<Header>Markdown Editor</Header>);
 
 render(Main, document.getElementById('app'));
