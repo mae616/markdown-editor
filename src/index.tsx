@@ -8,6 +8,7 @@ import {
     Navigate
 } from 'react-router-dom';
 import { Editor } from './pages/editor';
+import { History } from './pages/history';
 
 const GlobalStyle = createGlobalStyle`
     body * {
@@ -21,7 +22,7 @@ const Main = (
         <Router>
             <Routes>
                 <Route path='editor' element={<Editor />} />
-                <Route path='history' element={<h1>History</h1>} />
+                <Route path='history' element={<History />} />
                 <Route path='*' element={<Navigate to='editor'/>} />
             </Routes>
         </Router>
