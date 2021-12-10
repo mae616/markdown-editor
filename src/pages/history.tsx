@@ -1,9 +1,11 @@
-import { 
-    Link,
-    useNavigate
-} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header } from '../components/header';
+import {
+    getMemos,
+    MemoRecord
+} from '../indexeddb/memos';
 
 const HeaderArea = styled.div`
     position: fixed;
@@ -21,8 +23,15 @@ const Wrapper = styled.div`
     padding: 0 1rem;
 `;
 
-export const History: React.FC = () =>{
-    const navigate = useNavigate();
+export const History: React.FC = () => {
+    const [memos, setMemos] = useState<MemoRecord[]>([]);
+    console.log(memos);
+
+    useEffect(() => {
+        //  getMemos 関数を実行し、非同期処理が終わったら取得したテキスト履歴を setMemos に渡して更新している。
+        //  setMemos によって更新されると再描画が実行される。
+        getMemos().then(setMemos);
+    }, []);
 
     return (
         <>
