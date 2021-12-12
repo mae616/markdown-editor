@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import ReactMarkdown from 'react-markdown';
 import { putMemo } from '../indexeddb/memos';
 import { Button } from '../components/button';
 import { SaveModal } from '../components/save_modal';
@@ -9,10 +8,10 @@ import { Header } from '../components/header';
 // worker-loader! ...、読み込むファイルが Worker であることを示している
 // こうすると worker-loader が Worker として適切に処理してくれる。 
 // いわゆる「おまじない」として覚えておけば大丈夫
-import TestWorker from 'worker-loader!../worker/convert_markdown_worker.ts';
+import ConvertMarkdownWorker from 'worker-loader!../worker/convert_markdown_worker.ts';
 
 // Worker のインスタンスを生成する処理
-const testWorker = new TestWorker();
+const convertMarkdownWorker = new ConvertMarkdownWorker();
 
 const Wrapper = styled.div`
     bottom: 0;
@@ -60,17 +59,18 @@ interface Props {
 export const Editor: React.FC<Props> = (props) => {
     const { text, setText } = props;
     const [showModal, setShowModal] = useState(false);
+    const [html, setHtml] = useState('');
 
     useEffect(() => {
         // useEffect を使って、初回のみ Worker から結果を受け取る関数を登録
-        testWorker.onmessage = (event) => {
-            console.log('Main thread Received:', event.data);
+        convertMarkdownWorker.onmessage = (event) => {
+            setHtml(event.data.html);
         }
     });
 
     useEffect(() => {
         // useEffect を使って、テキストの変更時に Worker へテキストデータを送信
-        testWorker.postMessage(text)
+        convertMarkdownWorker.postMessage(text)
     }, [text]);
 
     return (
@@ -91,7 +91,7 @@ export const Editor: React.FC<Props> = (props) => {
                     onChange={(event) => setText(event.target.value)}
                     value={text} />
                 <Preview>
-                    <ReactMarkdown>{text}</ReactMarkdown>
+                    <div dangerouslySetInnerHTML={{ __html: html }} />
                 </Preview>
             </Wrapper>
             {showModal && (

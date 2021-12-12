@@ -1,4 +1,5 @@
 import { marked } from 'marked';
+import * as sanitizeHtml from 'sanitize-html';
 
 // TypeScript 特有の書き方
 // 通常の JavaScript であれば、self というグローバル変数でアクセスできます。
@@ -14,7 +15,7 @@ worker.addEventListener('message', (event) => {
     const text = event.data;
 
     // テキストデータ（マークダウン）を marked で HTML に変換
-    const html = marked(text);
+    const html = sanitizeHtml(marked(text), { allowedTags: [...sanitizeHtml.defaults.allowedTags, 'h1', 'h2'] });
 
     // メインスレッドへ処理結果を送信
     worker.postMessage({ html });
