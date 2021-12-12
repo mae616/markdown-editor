@@ -9,7 +9,7 @@ import { Header } from '../components/header';
 // worker-loader! ...、読み込むファイルが Worker であることを示している
 // こうすると worker-loader が Worker として適切に処理してくれる。 
 // いわゆる「おまじない」として覚えておけば大丈夫
-import TestWorker from 'worker-loader!../worker/test.ts';
+import TestWorker from 'worker-loader!../worker/convert_markdown_worker.ts';
 
 // Worker のインスタンスを生成する処理
 const testWorker = new TestWorker();
