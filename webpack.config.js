@@ -21,6 +21,7 @@ module.exports = {
         publicPath: '/dist/'
     },
     devServer: {
+        static: { directory: path.join(__dirname, '/') },
         hot: true,
         open: true,
         historyApiFallback: true
